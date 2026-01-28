@@ -72,9 +72,9 @@ The $5 monthly credit goes far for this use case—each summary costs roughly $0
 ════════════════════════════════════════════════════════════
 
 ## Summary
-Authentication system received major updates with OAuth2
-integration. Several bug fixes in the payment module.
-New API endpoints for user preferences.
+- Authentication system received major updates with OAuth2 provider integration and token refresh flow
+- Several bug fixes in the payment module including decimal precision and currency conversion
+- New API endpoints added for user preferences management
 
 ## By Area
   src/auth/       8 commits,  +300/-80   lines
@@ -82,8 +82,8 @@ New API endpoints for user preferences.
   src/api/        3 commits,  +200/-50   lines
 
 ## Commits
-  - feat: Add OAuth2 provider integration
-  - feat: Token refresh flow
-  - fix: Session timeout handling
+  2025-01-27 10:30 feat: Add OAuth2 provider integration
+  2025-01-27 09:15 feat: Token refresh flow
+  2025-01-26 16:45 fix: Session timeout handling
   ...
 ```
