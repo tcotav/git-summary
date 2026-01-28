@@ -87,3 +87,28 @@ The $5 monthly credit goes far for this use case—each summary costs roughly $0
   2025-01-26 16:45 fix: Session timeout handling
   ...
 ```
+
+### Without LLM (`--no-llm`)
+
+Skip the API call to just see git stats:
+
+```
+$ git-summary --no-llm
+No date range specified, defaulting to last 1 day.
+════════════════════════════════════════════════════════════
+  Git Summary: since 1 day ago (main)
+  5 commits | +120 -30 lines
+════════════════════════════════════════════════════════════
+
+## Summary
+(LLM summary skipped)
+
+## By Area
+  src/           3 commits,  +80/-20   lines
+  tests/         2 commits,  +40/-10   lines
+
+## Commits
+  2025-01-27 14:30 feat: Add new feature
+  2025-01-27 12:15 fix: Bug fix
+  ...
+```
