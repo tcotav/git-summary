@@ -19,7 +19,11 @@ async fn main() -> Result<()> {
     let repo = GitRepo::new(&args.repo);
 
     // Resolve date range
-    let (since, until) = args.resolve_date_range();
+    let (since, until, used_default) = args.resolve_date_range();
+
+    if used_default {
+        eprintln!("No date range specified, defaulting to last 1 day.");
+    }
 
     // Collect git data
     let data = repo.collect_summary(

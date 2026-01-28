@@ -49,15 +49,20 @@ pub struct Args {
 }
 
 impl Args {
-    /// Resolve date arguments into a (since, until) pair for git log
-    pub fn resolve_date_range(&self) -> (Option<String>, Option<String>) {
+    /// Resolve date arguments into a (since, until) pair for git log.
+    /// Returns (since, until, used_default) where used_default is true if
+    /// no date parameters were provided and the 1-day default was applied.
+    pub fn resolve_date_range(&self) -> (Option<String>, Option<String>, bool) {
         if let Some(ref date) = self.date {
             // Single date: from start of day to end of day
             let since = format!("{} 00:00:00", date);
             let until = format!("{} 23:59:59", date);
-            (Some(since), Some(until))
+            (Some(since), Some(until), false)
+        } else if self.since.is_some() || self.until.is_some() {
+            (self.since.clone(), self.until.clone(), false)
         } else {
-            (self.since.clone(), self.until.clone())
+            // No date parameters provided, default to last 1 day
+            (Some("1 day ago".to_string()), None, true)
         }
     }
 }
