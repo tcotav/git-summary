@@ -3,6 +3,12 @@ use serde::{Deserialize, Serialize};
 
 use crate::git::GitSummaryData;
 
+/// Maximum input tokens for Claude API (leaving room for output tokens)
+const MAX_INPUT_TOKENS: usize = 195_000;
+
+/// Approximate characters per token (conservative estimate)
+const CHARS_PER_TOKEN: f64 = 3.5;
+
 #[derive(Debug, Serialize)]
 struct AnthropicRequest {
     model: String,
@@ -42,8 +48,24 @@ impl Summarizer {
         })
     }
 
+    /// Estimate the number of tokens in a string
+    fn estimate_tokens(text: &str) -> usize {
+        (text.len() as f64 / CHARS_PER_TOKEN).ceil() as usize
+    }
+
     pub async fn summarize(&self, data: &GitSummaryData) -> Result<String> {
         let prompt = self.build_prompt(data);
+
+        let estimated_tokens = Self::estimate_tokens(&prompt);
+        if estimated_tokens > MAX_INPUT_TOKENS {
+            anyhow::bail!(
+                "Input too large for Claude API: ~{} tokens (limit: {} tokens). \
+                Try using a shorter date range with --since or --until, \
+                or reduce the number of commits.",
+                estimated_tokens,
+                MAX_INPUT_TOKENS
+            );
+        }
 
         let request = AnthropicRequest {
             model: self.model.clone(),
