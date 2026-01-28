@@ -16,26 +16,30 @@ jobs:
         include:
           - target: x86_64-unknown-linux-gnu
             os: ubuntu-latest
-            artifact_name: git-summary
             asset_name: git-summary-linux-amd64
 
           - target: x86_64-apple-darwin
             os: macos-latest
-            artifact_name: git-summary
             asset_name: git-summary-macos-amd64
 
           - target: aarch64-apple-darwin
             os: macos-latest
-            artifact_name: git-summary
             asset_name: git-summary-macos-arm64
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-action@stable
+      - name: Cache cargo registry
+        uses: actions/cache@v4
         with:
-          targets: ${{ matrix.target }}
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-${{ matrix.target }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Add target
+        run: rustup target add ${{ matrix.target }}
 
       - name: Build
         run: cargo build --release --target ${{ matrix.target }}
@@ -44,6 +48,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/${{ matrix.target }}/release/${{ matrix.artifact_name }}
+          file: target/${{ matrix.target }}/release/git-summary
           asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
