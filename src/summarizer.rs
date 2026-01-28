@@ -86,9 +86,10 @@ impl Summarizer {
     fn build_prompt(&self, data: &GitSummaryData) -> String {
         let mut prompt = String::new();
 
-        prompt.push_str("Summarize the following git commits in 2-3 concise paragraphs. ");
-        prompt.push_str("Focus on the main themes and areas of work. ");
+        prompt.push_str("Summarize the following git commits as a bulleted list. ");
+        prompt.push_str("Each bullet should describe a theme or area of work. ");
         prompt.push_str("Group related changes together conceptually. ");
+        prompt.push_str("Use simple '- ' for bullets. Keep each bullet to 1-2 sentences. ");
         prompt.push_str("Do not list individual commits or mention specific authors.\n\n");
 
         prompt.push_str(&format!(
