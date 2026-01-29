@@ -18,8 +18,8 @@ cargo build --release
 # Run directly
 cargo run -- --repo /path/to/repo --since "1 week ago"
 
-# Run without LLM (for testing git parsing)
-cargo run -- --since yesterday --no-llm
+# Run with LLM summary (requires ANTHROPIC_API_KEY)
+cargo run -- --since yesterday --llm
 
 # Run tests
 cargo test
@@ -51,5 +51,5 @@ src/
 
 ## Environment Requirements
 
-- `ANTHROPIC_API_KEY` environment variable required for LLM summaries
-- Use `--no-llm` flag to skip API calls during development/testing
+- `ANTHROPIC_API_KEY` environment variable required for LLM summaries (when using `--llm` flag)
+- By default, no API key is needed - LLM summaries are opt-in with the `--llm` flag

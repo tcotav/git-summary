@@ -43,9 +43,9 @@ pub struct Args {
     #[arg(long, default_value = ".")]
     pub repo: String,
 
-    /// Skip LLM summary, just show git data
+    /// Enable LLM summary (requires ANTHROPIC_API_KEY)
     #[arg(long)]
-    pub no_llm: bool,
+    pub llm: bool,
 }
 
 impl Args {

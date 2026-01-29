@@ -37,12 +37,12 @@ async fn main() -> Result<()> {
         return Ok(());
     }
 
-    // Get LLM summary (or placeholder if --no-llm)
-    let summary = if args.no_llm {
-        "(LLM summary skipped)".to_string()
-    } else {
+    // Get LLM summary (only if --llm flag is passed)
+    let summary = if args.llm {
         let summarizer = Summarizer::new()?;
         summarizer.summarize(&data).await?
+    } else {
+        "(LLM summary skipped - use --llm to enable)".to_string()
     };
 
     // Format output

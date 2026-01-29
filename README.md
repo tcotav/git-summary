@@ -30,11 +30,11 @@ git-summary --format json        # for piping to other tools
 # Verbose mode (show file changes per commit)
 git-summary --since yesterday --verbose
 
-# Quiet mode (just the LLM summary)
+# Quiet mode (just the summary)
 git-summary --since yesterday --quiet
 
-# Skip LLM call (useful for testing)
-git-summary --since yesterday --no-llm
+# Enable LLM summary (requires API key)
+git-summary --since yesterday --llm
 
 # Specify repo path
 git-summary --repo /path/to/repo --since yesterday
@@ -88,12 +88,12 @@ The $5 monthly credit goes far for this use case—each summary costs roughly $0
   ...
 ```
 
-### Without LLM (`--no-llm`)
+### Default Output (without LLM)
 
-Skip the API call to just see git stats:
+By default, git-summary shows git stats without calling the LLM API:
 
 ```
-$ git-summary --no-llm
+$ git-summary
 No date range specified, defaulting to last 1 day.
 ════════════════════════════════════════════════════════════
   Git Summary: since 1 day ago (main)
@@ -101,7 +101,7 @@ No date range specified, defaulting to last 1 day.
 ════════════════════════════════════════════════════════════
 
 ## Summary
-(LLM summary skipped)
+(LLM summary skipped - use --llm to enable)
 
 ## By Area
   src/           3 commits,  +80/-20   lines
@@ -111,4 +111,12 @@ No date range specified, defaulting to last 1 day.
   2025-01-27 14:30 feat: Add new feature
   2025-01-27 12:15 fix: Bug fix
   ...
+```
+
+### With LLM Summary (`--llm`)
+
+Add the `--llm` flag to generate an AI-powered summary (requires API key):
+
+```bash
+git-summary --since yesterday --llm
 ```
